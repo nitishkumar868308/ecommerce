@@ -39,51 +39,53 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <Card className="p-6 sm:p-8 w-full max-w-sm md:max-w-md bg-white/90 backdrop-blur-lg shadow-2xl rounded-xl border border-gray-300">
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-gray-900">Login</h2>
+    <div className="w-full h-screen overflow-hidden flex items-center justify-center bg-gray-100">
+      <div className="w-full max-w-sm md:max-w-md p-6 sm:p-8 overflow-auto">
+        <Card className="p-6 sm:p-8 w-full bg-white/90 backdrop-blur-lg shadow-2xl rounded-xl border border-gray-300">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-gray-900">Login</h2>
 
-        {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
+          {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700">Email</label>
-            <Input
-              type="email"
-              {...register("email")}
-              placeholder="Enter your email"
-              className="mt-1 p-3 w-full border rounded-lg focus:ring-2 focus:ring-blue-500"
-            />
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
-          </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700">Email</label>
+              <Input
+                type="email"
+                {...register("email")}
+                placeholder="Enter your email"
+                className="mt-1 p-3 w-full border rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+            </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700">Password</label>
-            <Input
-              type="password"
-              {...register("password")}
-              placeholder="Enter your password"
-              className="mt-1 p-3 w-full border rounded-lg focus:ring-2 focus:ring-blue-500"
-            />
-            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
-          </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700">Password</label>
+              <Input
+                type="password"
+                {...register("password")}
+                placeholder="Enter your password"
+                className="mt-1 p-3 w-full border rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+            </div>
 
-          <Button
-            type="submit"
-            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition duration-200"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Logging in..." : "Login"}
-          </Button>
-        </form>
+            <Button
+              type="submit"
+              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition duration-200"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Logging in..." : "Login"}
+            </Button>
+          </form>
 
-        <p className="text-center text-gray-600 text-sm mt-4">
-          Don&apos;t have an account?{" "}
-          <a href="#" className="text-blue-500 font-semibold hover:underline">
-            Sign Up
-          </a>
-        </p>
-      </Card>
+          <p className="text-center text-gray-600 text-sm mt-4">
+            Don&apos;t have an account?{" "}
+            <a href="#" className="text-blue-500 font-semibold hover:underline">
+              Sign Up
+            </a>
+          </p>
+        </Card>
+      </div>
     </div>
   );
 }
