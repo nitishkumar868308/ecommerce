@@ -23,14 +23,14 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(loginSchema),
-    mode: "onTouched", // Validation onChange
-    reValidateMode: "onBlur", // Revalidate on blur
+    mode: "onTouched",
+    reValidateMode: "onBlur",
   });
 
   const onSubmit = async (data: any) => {
     try {
       console.log("Logging in with:", data);
-      setErrorMessage(""); // Reset error on successful attempt
+      setErrorMessage("");
       await new Promise((resolve) => setTimeout(resolve, 1000));
       alert("Login Successful!");
     } catch (error) {
@@ -39,13 +39,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-gray-100">
-      <Card className="p-8 w-full max-w-md bg-white/80 backdrop-blur-md shadow-xl rounded-xl border border-gray-200">
-        <h2 className="text-3xl font-extrabold mb-6 text-center text-gray-900">Login</h2>
+    <div className="w-full min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <Card className="p-6 sm:p-8 w-full max-w-sm md:max-w-md bg-white/90 backdrop-blur-lg shadow-2xl rounded-xl border border-gray-300">
+        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-gray-900">Login</h2>
 
         {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
             <label className="block text-sm font-semibold text-gray-700">Email</label>
             <Input
@@ -78,7 +78,10 @@ export default function LoginPage() {
         </form>
 
         <p className="text-center text-gray-600 text-sm mt-4">
-          Don&apos;t have an account? <a href="#" className="text-blue-500 font-semibold">Sign Up</a>
+          Don&apos;t have an account?{" "}
+          <a href="#" className="text-blue-500 font-semibold hover:underline">
+            Sign Up
+          </a>
         </p>
       </Card>
     </div>
