@@ -7,6 +7,11 @@ body {
 }
 
 
+/* styles/globals.css ya apni CSS file me */
+#__next, .toast-container {
+  position: relative;
+  z-index: 9999 !important;
+}
 
 
 
@@ -74,6 +79,25 @@ body {
 @layer base {
   * {
     @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;

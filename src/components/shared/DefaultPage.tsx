@@ -1,5 +1,7 @@
-"use client"
-import { useState, useEffect } from "react";
+"use client";
+import { useState } from "react";
+import { useSession, signOut } from "next-auth/react";
+import { useAuthStore } from "@/store/authStore"; // ✅ Import Zustand store
 import { Menu, X, LogOut, UserCircle, ChevronDown, House, Users, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -7,40 +9,19 @@ import Image from "next/image";
 export default function DefaultPage({ children }: { children: React.ReactNode }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const { data: session } = useSession();
+    const user = useAuthStore((state) => state.user);
+    const logout = useAuthStore((state) => state.logout);
 
-    // Close sidebar by default on mobile
-    useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth < 768) {
-                setIsSidebarOpen(false);
-            } else {
-                setIsSidebarOpen(true);
-            }
-        };
-
-        handleResize();
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (!(event.target as HTMLElement).closest(".dropdown-container")) {
-                setIsDropdownOpen(false);
-            }
-        };
-
-        document.addEventListener("click", handleClickOutside);
-        return () => document.removeEventListener("click", handleClickOutside);
-    }, []);
-
+    const logoutHandler = async () => {
+        logout(); // ✅ Zustand store clear
+        await signOut({ callbackUrl: "/" }); // ✅ NextAuth se logout
+    };
 
     return (
         <div className="flex h-screen bg-gray-100">
             {/* Sidebar */}
-            <aside
-                className={`fixed inset-y-0 left-0 z-50 bg-cyan-950 text-white h-full transition-all ${isSidebarOpen ? "w-64" : "w-16"}`}
-            >
+            <aside className={`fixed inset-y-0 left-0 z-50 bg-cyan-950 text-white h-full transition-all ${isSidebarOpen ? "w-64" : "w-16"}`}>
                 <div className="p-4 flex justify-between items-center">
                     {isSidebarOpen && <h2 className="text-lg font-bold">Ecommerce</h2>}
                     <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
@@ -66,12 +47,20 @@ export default function DefaultPage({ children }: { children: React.ReactNode })
             {/* Main Content */}
             <div className={`flex-1 flex flex-col transition-all ${isSidebarOpen ? "pl-64" : "pl-16"}`}>
                 {/* Header */}
-                {/* <header className="bg-white shadow p-4 flex justify-between items-center relative">
+                <header className={`fixed top-0 bg-white shadow p-4 flex justify-between items-center z-50 transition-all ${isSidebarOpen ? "left-64 w-[calc(100%-16rem)]" : "left-16 w-[calc(100%-4rem)]"}`}>
                     <h1 className="text-xl font-bold">Admin Dashboard</h1>
                     <div className="relative dropdown-container">
                         <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                            <Image src="/images/profile.jpg" alt="Profile" width={40} height={40} className="rounded-full border border-gray-300" />
-                            <span className="hidden md:inline-block font-medium">Nitish Kumar</span>
+                            <Image
+                                src="/images/profile.jpg"
+                                alt="Profile"
+                                width={40}
+                                height={40}
+                                className="rounded-full border border-gray-300"
+                            />
+                            <span className="hidden md:inline-block font-medium">
+                                {session?.user?.name || user?.name || "User"}
+                            </span>
                             <ChevronDown className="w-5 h-5 hidden md:inline-block" />
                         </div>
                         {isDropdownOpen && (
@@ -79,39 +68,19 @@ export default function DefaultPage({ children }: { children: React.ReactNode })
                                 <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-700">
                                     <UserCircle className="w-5 h-5 mr-2" /> Profile
                                 </a>
-                                <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-700">
+                                <button
+                                    onClick={logoutHandler} // ✅ Logout call
+                                    className="flex w-full items-center px-4 py-2 hover:bg-gray-700 text-left"
+                                >
                                     <LogOut className="w-5 h-5 mr-2" /> Logout
-                                </a>
+                                </button>
                             </div>
                         )}
                     </div>
-                </header> */}
-
-<header className={`fixed top-0 bg-white shadow p-4 flex justify-between items-center z-50 transition-all ${isSidebarOpen ? "left-64 w-[calc(100%-16rem)]" : "left-16 w-[calc(100%-4rem)]"}`}>
-        <h1 className="text-xl font-bold">Admin Dashboard</h1>
-        <div className="relative dropdown-container">
-            <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                <Image src="/images/profile.jpg" alt="Profile" width={40} height={40} className="rounded-full border border-gray-300" />
-                <span className="hidden md:inline-block font-medium">Nitish Kumar</span>
-                <ChevronDown className="w-5 h-5 hidden md:inline-block" />
-            </div>
-            {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-gray-800 text-white shadow-md rounded-md overflow-hidden">
-                    <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-700">
-                        <UserCircle className="w-5 h-5 mr-2" /> Profile
-                    </a>
-                    <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-700">
-                        <LogOut className="w-5 h-5 mr-2" /> Logout
-                    </a>
-                </div>
-            )}
-        </div>
-    </header>
+                </header>
 
                 {/* Page Content */}
-                <main className="flex-1 p-4 pt-16">
-                    {children}
-                </main>
+                <main className="flex-1 p-4 pt-16">{children}</main>
             </div>
         </div>
     );
