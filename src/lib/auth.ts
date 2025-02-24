@@ -4,6 +4,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/lib/db/prisma";
 import { compare } from "bcryptjs";
 
+
+//Auth
 export const authOptions: NextAuthOptions = {
     session: { strategy: "jwt" },
     secret: process.env.NEXTAUTH_SECRET,
