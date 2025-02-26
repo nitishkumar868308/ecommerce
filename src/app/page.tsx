@@ -119,12 +119,16 @@
 import React from 'react'
 import Header from '@/components/layout/header'
 import Slider from '@/components/Home/Slider'
+import Product from '@/components/Home/Product'
+import Footer from '@/components/layout/footer'
 
 const page = () => {
   return (
     <>
       <Header />
       <Slider />
+      <Product />
+      <Footer />
     </>
   )
 }
