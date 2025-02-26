@@ -19,8 +19,8 @@ export default function Header() {
     const currentUser = session?.user || user;
 
     const logoutHandler = async () => {
-        logout(); // ✅ Zustand store clear
-        await signOut({ callbackUrl: "/" }); // ✅ NextAuth se logout
+        logout();
+        await signOut({ callbackUrl: "/" });
     };
 
     return (

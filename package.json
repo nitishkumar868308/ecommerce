@@ -19,6 +19,8 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "ecommerce": "file:",
+    "embla-carousel-autoplay": "^8.5.2",
+    "embla-carousel-react": "^8.5.2",
     "framer-motion": "^12.4.5",
     "lucide-react": "^0.475.0",
     "mysql2": "^3.12.0",
